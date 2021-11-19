@@ -1,6 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace memory_slash
 {
@@ -8,17 +15,38 @@ namespace memory_slash
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private GameWorld mainWorld;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            _graphics.ApplyChanges();
+
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+
+            _graphics.ApplyChanges();
+
+            this.IsFixedTimeStep = true;
+
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
+            _graphics.ApplyChanges();
+
+            this.Window.IsBorderless = true;
+
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
+
+            this.Window.Title = "Space!";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            mainWorld = new GameWorld(Content);
 
             base.Initialize();
         }
@@ -36,15 +64,21 @@ namespace memory_slash
                 Exit();
 
             // TODO: Add your update logic here
+            mainWorld.Update(Content);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            mainWorld.Draw(_spriteBatch);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
