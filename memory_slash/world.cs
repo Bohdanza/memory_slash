@@ -15,10 +15,23 @@ namespace memory_slash
     {
         List<MapObject> mapObjects = new List<MapObject>();
         MapObject referenceToHero;
+        const int blockSize = 10;
 
         public GameWorld(ContentManager contentManager)
         {
             referenceToHero = AddObject(new Hero(contentManager, 0, 0));
+
+            var rnd = new Random();
+
+            int q = rnd.Next(35, 100);
+
+            for (int i = 0; i < q; i++)
+            {
+                double tmpx = (rnd.NextDouble() - 0.5) * 500;
+                double tmpy = (rnd.NextDouble() - 0.5) * 500;
+
+                AddObject(new Asteroid(contentManager, tmpx, tmpy, 0.2, (float)((rnd.NextDouble() - 0.5) * 0.004), 1));
+            }
         }
 
         public void Update(ContentManager contentManager)
@@ -29,7 +42,7 @@ namespace memory_slash
             {
                 l = 1;
 
-                mapObjects[i].Update(contentManager);
+                mapObjects[i].Update(contentManager, this);
 
                 if(!mapObjects[i].Alive)
                 {
@@ -42,14 +55,14 @@ namespace memory_slash
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            int x = -(int)(referenceToHero.X * 5);
-            int y = -(int)(referenceToHero.Y * 5);
+            int x = -(int)(referenceToHero.X * blockSize);
+            int y = -(int)(referenceToHero.Y * blockSize);
 
             mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
 
             foreach(var currentObject in mapObjects)
             {
-                currentObject.Draw(spriteBatch, (int)(x + currentObject.X * 5) + 960, (int)(y + currentObject.Y * 5) + 540);
+                currentObject.Draw(spriteBatch, (int)(x + currentObject.X * blockSize) + 960, (int)(y + currentObject.Y * blockSize) + 540);
             }
         }
 

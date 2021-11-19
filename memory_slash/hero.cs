@@ -13,22 +13,24 @@ namespace memory_slash
 {
     public class Hero:Mob
     {
-        private float rotationSpeed = 0.1f;
+        private float rotationSpeed = 0.07f;
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
         private int timeSinceLastMovement = 1000, movementDuration = 75;
-
+        
         public Hero(ContentManager contentManager, double x, double y)
         {
             base.Action = "id";
+
+            Speed = 0.7;
 
             base.Type = 0;
 
             base.updateTexture(contentManager, true);
         }
 
-        public override void Update(ContentManager contentManager)
+        public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
             timeSinceLastMovement++;
 
@@ -55,9 +57,18 @@ namespace memory_slash
                 }
 
                 base.Move(Direction, Speed);
+
+                var rnd = new Random();
+
+                double nx = X + rnd.NextDouble() - 0.5;
+                double ny = Y + rnd.NextDouble() - 0.5;
+
+                MapObject part = new Particle(contentManager, nx, ny, rnd.Next(25, 35), 0);
+
+                gameWorld.AddObject(part);
             }
 
-            base.Update(contentManager);
+            base.Update(contentManager, gameWorld);
         }
     }
 }

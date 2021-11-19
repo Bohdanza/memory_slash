@@ -19,13 +19,14 @@ namespace memory_slash
         public List<Texture2D> Textures { get; protected set; }
         public int TexturePhase { get; protected set; }
         public virtual float Direction { get; protected set; }
+        public virtual double Radius { get; protected set; }
 
         protected virtual void updateTexture(ContentManager contentManager, bool reload)
         {
             
         }
 
-        public virtual void Update(ContentManager contentManager)
+        public virtual void Update(ContentManager contentManager, GameWorld gameWorld)
         {
 
         }
@@ -33,11 +34,11 @@ namespace memory_slash
         public virtual void Draw(SpriteBatch spriteBatch, int x, int y)
         {
             spriteBatch.Draw(Textures[TexturePhase],
-                new Vector2(x - Textures[TexturePhase].Width / 2, y - Textures[TexturePhase].Height / 2),
+                new Vector2(x, y),
                 new Rectangle(0, 0, Textures[TexturePhase].Width, Textures[TexturePhase].Height),
                 Color.White,
                 Direction, 
-                new Vector2(Textures[TexturePhase].Width / 2, Textures[TexturePhase].Height / 2), 1f, SpriteEffects.None,
+                new Vector2(0*Textures[TexturePhase].Width/2, Textures[TexturePhase].Height/2), 1f, SpriteEffects.None,
                 0);
         }
 

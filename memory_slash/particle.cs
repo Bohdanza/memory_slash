@@ -11,16 +11,28 @@ using System.Runtime.InteropServices;
 
 namespace memory_slash
 {
-    public abstract class Mob:MapObject
+    public class Particle:MapObject
     {
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
-        public override float Direction { get; protected set; }
-        public virtual double Speed { get; protected set; }
-        public virtual string Action { get; protected set; }
+        public override bool Alive { get => base.Alive; protected set => base.Alive = value; }
+        public int Lifetime { get; protected set; }
+        public int TimeSinceCreation { get; protected set; }
         public int Type { get; protected set; }
-        private int timeSinceLastTextureUpdate = 0;
-        protected string pact="";
+
+        public Particle(ContentManager contentManager, double x, double y, int lifetime, int type)
+        {
+            TimeSinceCreation = 0;
+
+            Lifetime = lifetime;
+
+            X = x;
+            Y = y;
+
+            Type = type;
+
+            this.updateTexture(contentManager, true);
+        }
 
         protected override void updateTexture(ContentManager contentManager, bool reload)
         {
@@ -30,9 +42,9 @@ namespace memory_slash
 
                 Textures = new List<Texture2D>();
 
-                while (File.Exists("Content/" + Type.ToString() + "mob_" + Action + base.TexturePhase.ToString()+".xnb"))
+                while (File.Exists("Content/" + Type.ToString() + "particle" +  base.TexturePhase.ToString() + ".xnb"))
                 {
-                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "mob_" + Action + base.TexturePhase.ToString()));
+                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "particle" + base.TexturePhase.ToString()));
 
                     TexturePhase++;
                 }
@@ -48,30 +60,15 @@ namespace memory_slash
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
-        { 
-            timeSinceLastTextureUpdate++;
+        {
+            TimeSinceCreation++;
+
+            if(TimeSinceCreation>=Lifetime)
+            {
+                Alive = false;
+            }
 
             base.Update(contentManager, gameWorld);
-
-            if (timeSinceLastTextureUpdate >= 16)
-            {
-                timeSinceLastTextureUpdate = 0;
-
-                this.updateTexture(contentManager, false);
-            }
-            else if(pact != Action)
-            {
-                timeSinceLastTextureUpdate = 0;
-
-                this.updateTexture(contentManager, true);
-            }
-
-            pact = Action;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
-        {
-            base.Draw(spriteBatch, x, y);
         }
     }
 }
