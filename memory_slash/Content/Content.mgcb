@@ -85,3 +85,10 @@
 /processorParam:TextureFormat=Color
 /build:backgroung_grid.png
 
+#begin interface_font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:interface_font.spritefont
+

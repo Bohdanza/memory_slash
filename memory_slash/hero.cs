@@ -71,5 +71,13 @@ namespace memory_slash
 
             base.Update(contentManager, gameWorld);
         }
+
+        public void DrawInterface(SpriteBatch spriteBatch, SpriteFont font, Color color)
+        {
+            double tmpx = Math.Truncate(X * 10000) / 10000;
+            double tmpy = Math.Truncate(Y * 10000) / 10000;
+
+            spriteBatch.DrawString(font, "X: " + tmpx.ToString() + "  Y: " + tmpy.ToString() + "\nMovement speed: " + Speed.ToString() + "\nRotation speed: " + rotationSpeed.ToString(), new Vector2(0, 0), color);
+        }
     }
 }

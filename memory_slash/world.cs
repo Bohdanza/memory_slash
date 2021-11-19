@@ -17,6 +17,7 @@ namespace memory_slash
         public MapObject referenceToHero { get; protected set; }
         const int blockSize = 10;
         private Texture2D backgroundGrid;
+        private SpriteFont interfaceFont;
 
         public GameWorld(ContentManager contentManager)
         {
@@ -35,6 +36,8 @@ namespace memory_slash
             }
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
+
+            interfaceFont = contentManager.Load<SpriteFont>("interface_font");
         }
 
         public void Update(ContentManager contentManager)
@@ -78,6 +81,8 @@ namespace memory_slash
             {
                 currentObject.Draw(spriteBatch, (int)(x + currentObject.X * blockSize) + 960, (int)(y + currentObject.Y * blockSize) + 540);
             }
+
+            ((Hero)referenceToHero).DrawInterface(spriteBatch, interfaceFont, new Color(10, 200, 6, 184));
         }
 
         public MapObject AddObject(MapObject mapObject)

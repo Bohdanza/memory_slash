@@ -38,7 +38,7 @@ namespace memory_slash
                 new Rectangle(0, 0, Textures[TexturePhase].Width, Textures[TexturePhase].Height),
                 Color.White,
                 Direction, 
-                new Vector2(0*Textures[TexturePhase].Width/2, Textures[TexturePhase].Height/2), 1f, SpriteEffects.None,
+                new Vector2(Textures[TexturePhase].Width/2, Textures[TexturePhase].Height/2), 1f, SpriteEffects.None,
                 0);
         }
 
