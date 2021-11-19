@@ -47,5 +47,10 @@ namespace memory_slash
             X += Math.Cos(direction) * speed;
             Y += Math.Sin(direction) * speed;
         }
+
+        public virtual void Kill()
+        {
+            Alive = false;
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace memory_slash
 
             Speed = 0.7;
 
+            base.Radius = 1.7;
             base.Type = 0;
 
             base.updateTexture(contentManager, true);

@@ -14,8 +14,9 @@ namespace memory_slash
     public class GameWorld
     {
         List<MapObject> mapObjects = new List<MapObject>();
-        MapObject referenceToHero;
+        public MapObject referenceToHero { get; protected set; }
         const int blockSize = 10;
+        private Texture2D backgroundGrid;
 
         public GameWorld(ContentManager contentManager)
         {
@@ -30,8 +31,10 @@ namespace memory_slash
                 double tmpx = (rnd.NextDouble() - 0.5) * 500;
                 double tmpy = (rnd.NextDouble() - 0.5) * 500;
 
-                AddObject(new Asteroid(contentManager, tmpx, tmpy, 0.2, (float)((rnd.NextDouble() - 0.5) * 0.004), 1));
+                AddObject(new Asteroid(contentManager, tmpx, tmpy, 0.2, (float)((rnd.NextDouble() - 0.5) * 0.004), 1, 7d));
             }
+
+            backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
         }
 
         public void Update(ContentManager contentManager)
@@ -58,6 +61,17 @@ namespace memory_slash
             int x = -(int)(referenceToHero.X * blockSize);
             int y = -(int)(referenceToHero.Y * blockSize);
 
+            int qbx = -((-x) % backgroundGrid.Width);
+            int qby = -((-y) % backgroundGrid.Height);
+
+            for (int i = qbx - backgroundGrid.Width; i <= 1920; i += backgroundGrid.Width)
+            {
+                for (int j = qby - backgroundGrid.Height; j <= 1080; j += backgroundGrid.Height)
+                {
+                    spriteBatch.Draw(backgroundGrid, new Vector2(i, j), Color.White);
+                }
+            }
+
             mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
 
             foreach(var currentObject in mapObjects)
@@ -71,6 +85,14 @@ namespace memory_slash
             mapObjects.Add(mapObject);
 
             return mapObject;
+        }
+
+        public double GetDist(double x1, double y1, double x2, double y2)
+        {
+            double nx = x1 - x2;
+            double ny = y1 - y2;
+
+            return Math.Sqrt(nx * nx + ny * ny);
         }
     }
 }

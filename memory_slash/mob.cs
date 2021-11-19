@@ -21,6 +21,7 @@ namespace memory_slash
         public int Type { get; protected set; }
         private int timeSinceLastTextureUpdate = 0;
         protected string pact="";
+        public virtual double Radius { get; protected set; }
 
         protected override void updateTexture(ContentManager contentManager, bool reload)
         {
