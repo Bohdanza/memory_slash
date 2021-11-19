@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "memory_slash", "memory_slash\memory_slash.csproj", "{070BF6F8-46BD-4967-92A9-2CCE8A2D8C44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{070BF6F8-46BD-4967-92A9-2CCE8A2D8C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070BF6F8-46BD-4967-92A9-2CCE8A2D8C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070BF6F8-46BD-4967-92A9-2CCE8A2D8C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070BF6F8-46BD-4967-92A9-2CCE8A2D8C44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FADFC855-A340-44BB-ABAB-77F39A3D0882}
+	EndGlobalSection
+EndGlobal
