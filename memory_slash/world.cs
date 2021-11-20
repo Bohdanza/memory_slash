@@ -15,6 +15,7 @@ namespace memory_slash
     {
         List<MapObject> mapObjects = new List<MapObject>();
         public MapObject referenceToHero { get; protected set; }
+        public MapObject referenceToSun { get; protected set; }
         const int blockSize = 10;
         private Texture2D backgroundGrid;
         private SpriteFont interfaceFont;
@@ -25,14 +26,14 @@ namespace memory_slash
 
             var rnd = new Random();
 
-            AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0));
+            referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0));
 
             AddObject(new SpaceStation(contentManager, 0, -120, 0.1, 0.000833333f, 3, 5.3));
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
 
-            int planetCount = rnd.Next(5, 10), currentRadius = 200;
+            int planetCount = rnd.Next(5, 10), currentRadius = rnd.Next(175, 240);
 
             for (int i = 0; i < planetCount; i++)
             {
@@ -118,6 +119,11 @@ namespace memory_slash
             double ny = y1 - y2;
 
             return Math.Sqrt(nx * nx + ny * ny);
+        }
+
+        public float GetDirection(double x1, double y1, double x2, double y2)
+        {
+            return (float)Math.Atan2(y1 - y2, x1 - x2);
         }
     }
 }

@@ -72,6 +72,13 @@ namespace memory_slash
                 gameWorld.AddObject(part);
             }
 
+            float directionToSun = gameWorld.GetDirection(X, Y, gameWorld.referenceToSun.X, gameWorld.referenceToSun.Y);
+            double distToSun = gameWorld.GetDist(X, Y, gameWorld.referenceToSun.X, gameWorld.referenceToSun.Y);
+
+            double speedToSun = (double)(1 / (distToSun * distToSun))*500;
+
+            this.Move(directionToSun, -speedToSun);
+
             base.Update(contentManager, gameWorld);
         }
 
