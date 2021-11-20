@@ -55,15 +55,18 @@ namespace memory_slash
 
             base.Update(contentManager, gameWorld);
 
-            double distToSun = gameWorld.GetDist(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
-
-            if (distToSun != 0)
+            if (gameWorld.referenceToHero.Alive)
             {
-                float directionToSun = gameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
+                double distToSun = GameWorld.GetDist(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
 
-                double speedToSun = (double)(1 / (distToSun * distToSun)) * Mass;
+                if (distToSun != 0)
+                {
+                    float directionToSun = GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
 
-                gameWorld.referenceToHero.Move(directionToSun, -speedToSun);
+                    double speedToSun = (double)(1 / (distToSun * distToSun)) * Mass;
+
+                    gameWorld.referenceToHero.Move(directionToSun, -speedToSun);
+                }
             }
 
             if (timeSinceLastTextureUpdate >= 16)

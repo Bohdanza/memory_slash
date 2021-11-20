@@ -19,6 +19,8 @@ namespace memory_slash
         public int Lifetime { get; protected set; }
         public int TimeSinceCreation { get; protected set; }
         public int Type { get; protected set; }
+        public Vector2 DrawMovement = new Vector2(0, 0);
+        public Vector2 DrawPlus { get; protected set; } = new Vector2(0, 0);
 
         public Particle(ContentManager contentManager, double x, double y, int lifetime, int type)
         {
@@ -68,7 +70,20 @@ namespace memory_slash
                 Alive = false;
             }
 
+            DrawPlus = new Vector2(DrawPlus.X + DrawMovement.X, DrawPlus.Y + DrawMovement.Y);
+
             base.Update(contentManager, gameWorld);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        {
+            spriteBatch.Draw(Textures[TexturePhase],
+               new Vector2(x + DrawPlus.X, y + DrawPlus.Y),
+               new Rectangle(0, 0, Textures[TexturePhase].Width, Textures[TexturePhase].Height),
+               Color.White,
+               Direction,
+               new Vector2(Textures[TexturePhase].Width / 2, Textures[TexturePhase].Height / 2), 1f, SpriteEffects.None,
+               0);
         }
     }
 }

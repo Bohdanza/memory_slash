@@ -35,7 +35,7 @@ namespace memory_slash
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _graphics.ApplyChanges();
 
-            this.Window.IsBorderless = true;
+            this.Window.IsBorderless = false;
 
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();

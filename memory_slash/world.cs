@@ -38,7 +38,7 @@ namespace memory_slash
             for (int i = 0; i < planetCount; i++)
             {
                 int currentSize = rnd.Next(0, 3);
-                double currentSpeed = rnd.NextDouble()*currentRadius*0.001+0.1;
+                double currentSpeed = rnd.NextDouble() * currentRadius * 0.001 + 0.1;
 
                 if (currentSize == 0)
                 {
@@ -113,7 +113,7 @@ namespace memory_slash
             return mapObject;
         }
 
-        public double GetDist(double x1, double y1, double x2, double y2)
+        public static double GetDist(double x1, double y1, double x2, double y2)
         {
             double nx = x1 - x2;
             double ny = y1 - y2;
@@ -121,7 +121,7 @@ namespace memory_slash
             return Math.Sqrt(nx * nx + ny * ny);
         }
 
-        public float GetDirection(double x1, double y1, double x2, double y2)
+        public static float GetDirection(double x1, double y1, double x2, double y2)
         {
             return (float)Math.Atan2(y1 - y2, x1 - x2);
         }

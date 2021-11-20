@@ -18,7 +18,9 @@ namespace memory_slash
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
         private int timeSinceLastMovement = 1000, movementDuration = 75;
-        
+        private double px;
+        private double py;
+
         public Hero(ContentManager contentManager, double x, double y)
         {
             base.Action = "id";
@@ -31,11 +33,17 @@ namespace memory_slash
             X = x;
             Y = y;
 
+            px = X;
+            py = Y;
+
             base.updateTexture(contentManager, true);
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
+            px = X;
+            py = Y;
+
             timeSinceLastMovement++;
 
             if (Action == "id")
@@ -72,6 +80,20 @@ namespace memory_slash
                 gameWorld.AddObject(part);
             }
 
+            if(!Alive)
+            {
+                var rnd = new Random();
+
+                int count = rnd.Next(100, 200);
+
+                for (int i = 0; i < count; i++)
+                {
+                    var refer = gameWorld.AddObject(new Particle(contentManager, X, Y, rnd.Next(50, 120), 0));
+
+                    ((Particle)refer).DrawMovement = new Vector2((float)(rnd.NextDouble()-0.5)*6, (float)(rnd.NextDouble() - 0.5) * 6);
+                }
+            }
+
             base.Update(contentManager, gameWorld);
         }
 
@@ -80,7 +102,16 @@ namespace memory_slash
             double tmpx = Math.Truncate(X * 10000) / 10000;
             double tmpy = Math.Truncate(Y * 10000) / 10000;
 
-            spriteBatch.DrawString(font, "X: " + tmpx.ToString() + "  Y: " + tmpy.ToString() + "\nMovement speed: " + Speed.ToString() + "\nRotation speed: " + rotationSpeed.ToString(), new Vector2(0, 0), color);
+            double realspeed = GameWorld.GetDist(X, Y, px, py);
+
+            realspeed = Math.Truncate(realspeed * 10000) / 10000;
+
+            spriteBatch.DrawString(font, "X: " + tmpx.ToString() + "  Y: " + tmpy.ToString() + "\nSpeed: " + realspeed.ToString() + "\nRotation speed: " + rotationSpeed.ToString(), new Vector2(0, 0), color);
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
         }
     }
 }
