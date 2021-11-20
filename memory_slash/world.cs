@@ -68,7 +68,7 @@ namespace memory_slash
 
                 int q = rnd.Next(0, 100);
 
-                if (q <= 25)
+                if (q <= 60)
                 {
                     int rd = currentRadius + rnd.Next(50, 75);
 
@@ -87,6 +87,24 @@ namespace memory_slash
                 }
 
                 currentRadius += rnd.Next(100, 250);
+            }
+
+            int enemyCount = rnd.Next(60, 100);
+
+            for (int i = 0; i < enemyCount; i++)
+            {
+                int qx = rnd.Next(-currentRadius, currentRadius);
+                int qy = rnd.Next(-currentRadius, currentRadius);
+
+                int qc = rnd.Next(7, 14);
+
+                for (int j = 0; j < qc; j++)
+                {
+                    double qx1 = qx + (rnd.NextDouble() - 0.5) * 14;
+                    double qy1 = qy + (rnd.NextDouble() - 0.5) * 14;
+
+                    AddObject(new Enemy(contentManager, qx1, qy1, 9, 0.65, 4, 0, 130, 20));
+                }
             }
 
             referenceToHero = AddObject(new Hero(contentManager, 0, -currentRadius+75));
