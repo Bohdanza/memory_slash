@@ -89,5 +89,10 @@ namespace memory_slash
         {
             base.Draw(spriteBatch, x, y);
         }
+
+        public void ChangeRotation(float newRotation)
+        {
+            Direction = newRotation;
+        }
     }
 }

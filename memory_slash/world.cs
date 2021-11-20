@@ -22,18 +22,33 @@ namespace memory_slash
 
         public GameWorld(ContentManager contentManager)
         {
-            referenceToHero = AddObject(new Hero(contentManager, 0, -100.0d));
+            referenceToHero = AddObject(new Hero(contentManager, 0, -160.0d));
 
             var rnd = new Random();
 
             referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0, 500));
 
-            AddObject(new SpaceStation(contentManager, 0, -120, 0.1, 0.000833333f, 3, 5.3, 10));
+            AddObject(new SpaceStation(contentManager, 0, -135, 0.1, 0.000833333f, 3, 5.3, 10));
+
+            for (int i = 0; i < 84; i++)
+            {
+                if (i % 5 != 0)
+                {
+                    float rot = i * 0.075f;
+
+                    double y = -Math.Cos(rot) * 120;
+                    double x = Math.Sin(rot) * 120;
+
+                    var reference = AddObject(new Asteroid(contentManager, x, y, 0.15, (float)(0.15 / 120), 8, 4.5, 10));
+
+                    ((Mob)reference).ChangeRotation(rot);
+                }
+            }
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
 
-            int planetCount = rnd.Next(5, 10), currentRadius = rnd.Next(175, 240);
+            int planetCount = rnd.Next(5, 10), currentRadius = rnd.Next(230, 270);
 
             for (int i = 0; i < planetCount; i++)
             {
@@ -51,6 +66,26 @@ namespace memory_slash
                 else
                 {
                     AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 6, 6, 50));
+                }
+
+                int q = rnd.Next(0, 100);
+
+                if (q <= 25)
+                {
+                    int rd = currentRadius + rnd.Next(50, 75);
+
+                    double spd = rnd.NextDouble() * 0.2;
+
+                    int rt = rnd.Next(0, 80);
+
+                    float rot =  rt * 0.075f;
+
+                    double y = -Math.Cos(rot) * rd;
+                    double x = Math.Sin(rot) * rd;
+
+                    var reference = AddObject(new SpaceStation(contentManager, x, y, spd, (float)(spd / rd), 7, 10, 25));
+
+                    ((Mob)reference).ChangeRotation(rot);
                 }
 
                 currentRadius += rnd.Next(100, 250);
