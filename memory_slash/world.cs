@@ -17,13 +17,11 @@ namespace memory_slash
         public MapObject referenceToHero { get; protected set; }
         public MapObject referenceToSun { get; protected set; }
         const int blockSize = 10;
-        private Texture2D backgroundGrid;
+        private Texture2D backgroundGrid, noisePixel;
         private SpriteFont interfaceFont;
 
         public GameWorld(ContentManager contentManager)
         {
-            referenceToHero = AddObject(new Hero(contentManager, 0, -160.0d));
-
             var rnd = new Random();
 
             referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0, 500));
@@ -74,7 +72,7 @@ namespace memory_slash
                 {
                     int rd = currentRadius + rnd.Next(50, 75);
 
-                    double spd = rnd.NextDouble() * 0.2;
+                    double spd = rnd.NextDouble() * 0.2 + 0.1;
 
                     int rt = rnd.Next(0, 80);
 
@@ -91,7 +89,11 @@ namespace memory_slash
                 currentRadius += rnd.Next(100, 250);
             }
 
+            referenceToHero = AddObject(new Hero(contentManager, 0, -currentRadius+75));
+
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
+            
+            noisePixel = contentManager.Load<Texture2D>("noise_pixel");
 
             interfaceFont = contentManager.Load<SpriteFont>("interface_font");
         }
@@ -139,6 +141,18 @@ namespace memory_slash
             }
 
             ((Hero)referenceToHero).DrawInterface(spriteBatch, interfaceFont, new Color(10, 200, 6, 184));
+
+            var rnd = new Random();
+
+            for(int i=0; i<1080; i++)
+            {
+                int ns = rnd.Next(0, 100);
+
+                if(ns<2)
+                {
+                    spriteBatch.Draw(noisePixel, new Rectangle(0, i, 1920, 1), Color.Black);
+                }
+            }
         }
 
         public MapObject AddObject(MapObject mapObject)
