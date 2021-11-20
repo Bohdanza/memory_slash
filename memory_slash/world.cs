@@ -28,20 +28,7 @@ namespace memory_slash
 
             AddObject(new SpaceStation(contentManager, 0, -135, 0.1, 0.000833333f, 3, 5.3, 10));
 
-            for (int i = 0; i < 84; i++)
-            {
-                if (i % 5 != 0)
-                {
-                    float rot = i * 0.075f;
-
-                    double y = -Math.Cos(rot) * 120;
-                    double x = Math.Sin(rot) * 120;
-
-                    var reference = AddObject(new Asteroid(contentManager, x, y, 0.15, (float)(0.15 / 120), 8, 4.5, 10));
-
-                    ((Mob)reference).ChangeRotation(rot);
-                }
-            }
+            PlaceDysonSphere(contentManager, 120, 0.15, 5, 84);
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
@@ -103,11 +90,13 @@ namespace memory_slash
                     double qx1 = qx + (rnd.NextDouble() - 0.5) * 14;
                     double qy1 = qy + (rnd.NextDouble() - 0.5) * 14;
 
-                    AddObject(new Enemy(contentManager, qx1, qy1, 9, 0.65, 4, 0, 130, 20));
+                    AddObject(new Enemy(contentManager, qx1, qy1, 9, 0.4, 4, 0, 130, 20));
                 }
             }
 
-            referenceToHero = AddObject(new Hero(contentManager, 0, -currentRadius+75));
+            referenceToHero = AddObject(new Hero(contentManager, 0, -currentRadius + 75));
+
+            PlaceDysonSphere(contentManager, -currentRadius + 100, 0.15, 10, 800);
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
             
@@ -178,6 +167,26 @@ namespace memory_slash
             mapObjects.Add(mapObject);
 
             return mapObject;
+        }
+
+        protected void PlaceDysonSphere(ContentManager contentManager, int radius, double speed, int divide, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (i % divide != 0)
+                {
+                    //MAGIC
+                    //9==4.5*2
+                    float rot = i * ((float)9/radius);
+
+                    double y = Math.Cos(rot) * radius;
+                    double x = Math.Sin(rot) * radius;
+                    
+                    var reference = AddObject(new Asteroid(contentManager, x, y, speed, (float)(speed / radius), 8, 4.5, 7));
+
+                    ((Mob)reference).ChangeRotation(rot);
+                }
+            }
         }
 
         public static double GetDist(double x1, double y1, double x2, double y2)
