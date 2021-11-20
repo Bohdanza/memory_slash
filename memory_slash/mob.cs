@@ -21,7 +21,8 @@ namespace memory_slash
         public int Type { get; protected set; }
         private int timeSinceLastTextureUpdate = 0;
         protected string pact="";
-        public virtual double Radius { get; protected set; }
+        public override double Radius { get; protected set; }
+        public virtual int Mass { get; protected set; } = 1;
 
         protected override void updateTexture(ContentManager contentManager, bool reload)
         {
@@ -53,6 +54,17 @@ namespace memory_slash
             timeSinceLastTextureUpdate++;
 
             base.Update(contentManager, gameWorld);
+
+            double distToSun = gameWorld.GetDist(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
+
+            if (distToSun != 0)
+            {
+                float directionToSun = gameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
+
+                double speedToSun = (double)(1 / (distToSun * distToSun)) * Mass;
+
+                gameWorld.referenceToHero.Move(directionToSun, -speedToSun);
+            }
 
             if (timeSinceLastTextureUpdate >= 16)
             {

@@ -26,9 +26,9 @@ namespace memory_slash
 
             var rnd = new Random();
 
-            referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0));
+            referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0, 500));
 
-            AddObject(new SpaceStation(contentManager, 0, -120, 0.1, 0.000833333f, 3, 5.3));
+            AddObject(new SpaceStation(contentManager, 0, -120, 0.1, 0.000833333f, 3, 5.3, 10));
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
@@ -42,15 +42,15 @@ namespace memory_slash
 
                 if (currentSize == 0)
                 {
-                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 4, 16.5));
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 4, 16.5, 200));
                 }
                 else if (currentSize == 1)
                 {
-                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 5, 12));
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 5, 12, 100));
                 }
                 else
                 {
-                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 6, 6));
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 6, 6, 50));
                 }
 
                 currentRadius += rnd.Next(100, 250);

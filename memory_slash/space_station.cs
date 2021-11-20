@@ -20,8 +20,10 @@ namespace memory_slash
         public float RotationSpeed { get; protected set; }
         private int timeSinceParticleSummon = 0;
 
-        public SpaceStation(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius)
+        public SpaceStation(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
         {
+            Mass = mass;
+
             base.Action = "id";
             base.Type = type;
             base.Radius = radius;
