@@ -21,18 +21,38 @@ namespace memory_slash
 
         public GameWorld(ContentManager contentManager)
         {
-            referenceToHero = AddObject(new Hero(contentManager, 0, 0));
+            referenceToHero = AddObject(new Hero(contentManager, 0, -100.0d));
 
             var rnd = new Random();
 
-            int q = rnd.Next(35, 100);
+            AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0));
 
-            for (int i = 0; i < q; i++)
+            AddObject(new SpaceStation(contentManager, 0, -120, 0.1, 0.000833333f, 3, 5.3));
+
+            //PI*2*R == PI*2*speed/rotationSpeed =>
+            // =>  R = speed/rotationSpeed
+
+            int planetCount = rnd.Next(5, 10), currentRadius = 200;
+
+            for (int i = 0; i < planetCount; i++)
             {
-                double tmpx = (rnd.NextDouble() - 0.5) * 500;
-                double tmpy = (rnd.NextDouble() - 0.5) * 500;
+                int currentSize = rnd.Next(0, 3);
+                double currentSpeed = rnd.NextDouble()*currentRadius*0.001+0.1;
 
-                AddObject(new Asteroid(contentManager, tmpx, tmpy, 0.2, (float)((rnd.NextDouble() - 0.5) * 0.004), 1, 7d));
+                if (currentSize == 0)
+                {
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 4, 16.5));
+                }
+                else if (currentSize == 1)
+                {
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 5, 12));
+                }
+                else
+                {
+                    AddObject(new Asteroid(contentManager, 0, -currentRadius, currentSpeed, (float)currentSpeed / currentRadius, 6, 6));
+                }
+
+                currentRadius += rnd.Next(100, 250);
             }
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");

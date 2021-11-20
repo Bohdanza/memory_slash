@@ -28,6 +28,9 @@ namespace memory_slash
             base.Radius = 1.7;
             base.Type = 0;
 
+            X = x;
+            Y = y;
+
             base.updateTexture(contentManager, true);
         }
 
