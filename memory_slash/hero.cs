@@ -17,7 +17,7 @@ namespace memory_slash
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
-        private int timeSinceLastMovement = 1000, movementDuration = 75;
+        private int timeSinceLastMovement = 1000, movementDuration = 20;
         private double px;
         private double py;
 
@@ -25,7 +25,7 @@ namespace memory_slash
         {
             base.Action = "id";
 
-            Speed = 0.7;
+            Speed = 3;
 
             base.Radius = 1.7;
             base.Type = 0;
@@ -72,12 +72,15 @@ namespace memory_slash
 
                 var rnd = new Random();
 
-                double nx = X + rnd.NextDouble() - 0.5;
-                double ny = Y + rnd.NextDouble() - 0.5;
+                for (int i = 0; i < 10; i++)
+                {
+                    double nx = X + (rnd.NextDouble() - 0.5)*3;
+                    double ny = Y + (rnd.NextDouble() - 0.5)*3;
 
-                MapObject part = new Particle(contentManager, nx, ny, rnd.Next(25, 35), 0);
+                    MapObject part = new Particle(contentManager, nx, ny, rnd.Next(5, 15), 0);
 
-                gameWorld.AddObject(part);
+                    gameWorld.AddObject(part);
+                }
             }
 
             if(!Alive)
