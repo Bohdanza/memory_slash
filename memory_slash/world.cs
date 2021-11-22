@@ -74,7 +74,23 @@ namespace memory_slash
                 ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
             }
 
-            if(rnd.Next(0, 1000)==0)
+            if (Score >= 3 && rnd.Next(0, 100) <= Score / 3)
+            {
+                int rad = rnd.Next(0, 1650);
+
+                double j = rnd.NextDouble() * Math.PI * 2;
+
+                double rot = j;
+
+                double y = -Math.Cos((float)rot) * rad;
+                double x = Math.Sin((float)rot) * rad;
+
+                var reference = AddObject(new Enemy(contentManager, x, y, 9, 2.75, 8d, 0, 400, 2, 500));
+
+                ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+            }
+
+            if (rnd.Next(0, 1000)<=(int)(10/Math.Max(1, Score)))
             {
                 int rad = rnd.Next(0, 1650);
 
