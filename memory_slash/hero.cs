@@ -25,7 +25,7 @@ namespace memory_slash
         {
             base.Action = "id";
 
-            Speed = 3;
+            Speed = 2.4;
 
             base.Radius = 1.7;
             base.Type = 0;

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace memory_slash
 {
-    public class Asteroid:Mob
+    public class Bullet : Mob
     {
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
@@ -19,7 +19,7 @@ namespace memory_slash
         public float RotationSpeed { get; protected set; }
         private int timeSinceParticleSummon = 0;
 
-        public Asteroid(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
+        public Bullet(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
         {
             Mass = mass;
 
@@ -40,7 +40,7 @@ namespace memory_slash
         {
             Direction += RotationSpeed;
 
-         //   Direction %= (float)(Math.PI * 2);
+            //   Direction %= (float)(Math.PI * 2);
 
             base.Move(Direction, Speed);
 
@@ -60,6 +60,11 @@ namespace memory_slash
             if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X + gameWorld.referenceToHero.Radius, gameWorld.referenceToHero.Y + gameWorld.referenceToHero.Radius) <= Radius + gameWorld.referenceToHero.Radius)
             {
                 gameWorld.referenceToHero.Kill();
+            }
+
+            if (GameWorld.GetDist(0, 0, X, Y) >= 1760)
+            {
+                base.Kill();
             }
 
             base.Update(contentManager, gameWorld);

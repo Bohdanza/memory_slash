@@ -16,27 +16,22 @@ namespace memory_slash
         List<MapObject> mapObjects = new List<MapObject>();
         public MapObject referenceToHero { get; protected set; }
         public MapObject referenceToSun { get; protected set; }
-        const int blockSize = 1;
+        const int blockSize = 2;
         private Texture2D backgroundGrid, noisePixel;
         private SpriteFont interfaceFont;
+        public int Score = 0;
 
         public GameWorld(ContentManager contentManager)
         {
             var rnd = new Random();
 
-            referenceToSun = AddObject(new Asteroid(contentManager, 0, 0, 0, (float)(Math.PI*2), 2, 40.0, 500));
-
-            //AddObject(new SpaceStation(contentManager, 0, -135, 0.1, 0.000833333f, 3, 5.3, 10));
-
-            PlaceDysonSphere(contentManager, 150, 0.08, 5, 84, 0.075);
+            PlaceSystem(contentManager, 0, 0, rnd.Next(1, 8));
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
-            referenceToHero = AddObject(new Hero(contentManager, 0, -1550));
+            referenceToHero = AddObject(new Hero(contentManager, 0, -1600));
 
-            AddObject(new SpaceStation(contentManager, 0, -1600, 0.1, 0.002f, 10, 12.5, 40));
-
-            PlaceDysonSphere(contentManager, 1400, 0.04, 2, 1250, 0.005);
+            PlaceDysonSphere(contentManager, 1700, 0.1, 10000, 800, 0.025);
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
             
@@ -62,6 +57,38 @@ namespace memory_slash
                     l = 0;
                 }
             }
+
+            Random rnd = new Random();
+
+            if(rnd.Next(0, 100)<=Score)
+            {
+                double j = rnd.NextDouble() * Math.PI * 2;
+
+                double rot = j;
+
+                double y = -Math.Cos((float)rot) * 1699;
+                double x = Math.Sin((float)rot) * 1699;
+
+                var reference = AddObject(new Asteroid(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
+
+                ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+            }
+
+            if(rnd.Next(0, 1000)==0)
+            {
+                int rad = rnd.Next(0, 1650);
+
+                double j = rnd.NextDouble() * Math.PI * 2;
+
+                double rot = j;
+
+                double y = -Math.Cos((float)rot) * rad;
+                double x = Math.Sin((float)rot) * rad;
+
+                var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 1, 4.5, 2));
+
+                //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -80,14 +107,23 @@ namespace memory_slash
                 }
             }
 
-            mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
-
-            foreach(var currentObject in mapObjects)
+           // mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
+            
+            for (int i = 0; i < mapObjects.Count; i++)
             {
-                currentObject.Draw(spriteBatch, (int)(x + currentObject.X * blockSize) + 960, (int)(y + currentObject.Y * blockSize) + 540);
+                var currentObject = mapObjects[i];
+
+                if (GetDist(referenceToHero.X, referenceToHero.Y, currentObject.X, currentObject.Y) <= 1080 / blockSize)
+                {
+                    currentObject.Draw(spriteBatch, (int)(x + currentObject.X * blockSize) + 960, (int)(y + currentObject.Y * blockSize) + 540);
+                }
             }
 
             ((Hero)referenceToHero).DrawInterface(spriteBatch, interfaceFont, new Color(10, 200, 6, 184));
+
+            string drawingScoreString = "Score: " + Score.ToString();
+
+            spriteBatch.DrawString(interfaceFont, drawingScoreString, new Vector2(1920 - interfaceFont.MeasureString(drawingScoreString).X - 10, 10), Color.Lime);
 
             var rnd = new Random();
 
@@ -132,6 +168,49 @@ namespace memory_slash
             }
         }
 
+        protected void PlaceSystem(ContentManager contentManager, int x, int y, int planetsCount)
+        {
+            AddObject(new Asteroid(contentManager, x, y, 0, 0f, 2, 124, 500));
+
+            Random rnd = new Random();
+
+            int currentRadius = rnd.Next(200, 250);
+
+            for (int i = 0; i < planetsCount; i++)
+            {
+                double speed = rnd.NextDouble() * 5;
+                double rotationSpeed = speed / currentRadius;
+
+                //PI*2*R == PI*2*speed/rotationSpeed =>
+                // =>  R = speed/rotationSpeed
+
+                //48 32 16
+
+                int size = rnd.Next(4, 7);
+                int mass = 0, radius = 0;
+
+                if(size==4)
+                {
+                    radius = 48;
+                    mass = 150;
+                }
+                else if (size == 5)
+                {
+                    radius = 32;
+                    mass = 80;
+                }
+                else if (size == 6)
+                {
+                    radius = 16;
+                    mass = 35;
+                }
+
+                AddObject(new Asteroid(contentManager, x, y - currentRadius, speed, (float)rotationSpeed, size, radius, mass));
+
+                currentRadius += rnd.Next(150, 250);
+            }
+        }
+        
         public static double GetDist(double x1, double y1, double x2, double y2)
         {
             double nx = x1 - x2;

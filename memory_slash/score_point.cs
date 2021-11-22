@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 namespace memory_slash
 {
-    public class Asteroid:Mob
+    public class ScoreParticle : Mob
     {
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
@@ -19,7 +19,7 @@ namespace memory_slash
         public float RotationSpeed { get; protected set; }
         private int timeSinceParticleSummon = 0;
 
-        public Asteroid(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
+        public ScoreParticle(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
         {
             Mass = mass;
 
@@ -38,30 +38,13 @@ namespace memory_slash
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
-            Direction += RotationSpeed;
-
-         //   Direction %= (float)(Math.PI * 2);
-
-            base.Move(Direction, Speed);
-
-            timeSinceParticleSummon++;
-
-            double qr = 2 * Math.PI / RotationSpeed;
-
-            if (timeSinceParticleSummon >= 1 && (Type == 4 || Type == 5 || Type == 6))
-            {
-                timeSinceParticleSummon = 0;
-
-                MapObject part = new Particle(contentManager, X, Y, (int)qr, 0);
-
-                gameWorld.AddObject(part);
-            }
-
             if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X + gameWorld.referenceToHero.Radius, gameWorld.referenceToHero.Y + gameWorld.referenceToHero.Radius) <= Radius + gameWorld.referenceToHero.Radius)
             {
-                gameWorld.referenceToHero.Kill();
-            }
+                gameWorld.Score++;
 
+                base.Kill();
+            }
+            
             base.Update(contentManager, gameWorld);
         }
     }
