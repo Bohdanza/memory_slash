@@ -17,7 +17,7 @@ namespace memory_slash
         public MapObject referenceToHero { get; protected set; }
         public MapObject referenceToSun { get; protected set; }
         const int blockSize = 2;
-        private Texture2D backgroundGrid, noisePixel;
+        private Texture2D backgroundGrid;
         private SpriteFont interfaceFont;
         public int Score = 0;
 
@@ -25,7 +25,7 @@ namespace memory_slash
         {
             var rnd = new Random();
 
-            PlaceSystem(contentManager, 0, 0, rnd.Next(1, 8));
+            PlaceSystem(contentManager, 0, 0, rnd.Next(3, 7));
 
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
@@ -35,8 +35,6 @@ namespace memory_slash
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
             
-            noisePixel = contentManager.Load<Texture2D>("noise_pixel");
-
             interfaceFont = contentManager.Load<SpriteFont>("interface_font");
         }
 
@@ -58,52 +56,55 @@ namespace memory_slash
                 }
             }
 
-            Random rnd = new Random();
-
-            if(rnd.Next(0, 100)<=Score)
+            if (referenceToHero.Alive)
             {
-                double j = rnd.NextDouble() * Math.PI * 2;
+                Random rnd = new Random();
 
-                double rot = j;
+                if (rnd.Next(0, 100) <= Score)
+                {
+                    double j = rnd.NextDouble() * Math.PI * 2;
 
-                double y = -Math.Cos((float)rot) * 1699;
-                double x = Math.Sin((float)rot) * 1699;
+                    double rot = j;
 
-                var reference = AddObject(new Asteroid(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
+                    double y = -Math.Cos((float)rot) * 1699;
+                    double x = Math.Sin((float)rot) * 1699;
 
-                ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
-            }
+                    var reference = AddObject(new Asteroid(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
 
-            if (Score >= 3 && rnd.Next(0, 100) <= Score / 3)
-            {
-                int rad = rnd.Next(0, 1650);
+                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
 
-                double j = rnd.NextDouble() * Math.PI * 2;
+                if (Score >= 10 && rnd.Next(0, 100) <= Score / 10)
+                {
+                    int rad = rnd.Next(0, 1650);
 
-                double rot = j;
+                    double j = rnd.NextDouble() * Math.PI * 2;
 
-                double y = -Math.Cos((float)rot) * rad;
-                double x = Math.Sin((float)rot) * rad;
+                    double rot = j;
 
-                var reference = AddObject(new Enemy(contentManager, x, y, 9, 2.75, 8d, 0, 400, 2, 500));
+                    double y = -Math.Cos((float)rot) * rad;
+                    double x = Math.Sin((float)rot) * rad;
 
-                ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
-            }
+                    var reference = AddObject(new Enemy(contentManager, x, y, 9, 2, 8d, 0, 400, 9, 500));
 
-            if (rnd.Next(0, 1000)<=(int)(10/Math.Max(1, Score)))
-            {
-                int rad = rnd.Next(0, 1650);
+                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
 
-                double j = rnd.NextDouble() * Math.PI * 2;
+                if (rnd.Next(0, 1000) <= (int)(10 / Math.Max(1, Score)))
+                {
+                    int rad = rnd.Next(55, 1650);
 
-                double rot = j;
+                    double j = rnd.NextDouble() * Math.PI * 2;
 
-                double y = -Math.Cos((float)rot) * rad;
-                double x = Math.Sin((float)rot) * rad;
+                    double rot = j;
 
-                var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 1, 4.5, 2));
+                    double y = -Math.Cos((float)rot) * rad;
+                    double x = Math.Sin((float)rot) * rad;
 
-                //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                    var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 1, 4.5, 2));
+
+                    //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
             }
         }
 
@@ -140,18 +141,6 @@ namespace memory_slash
             string drawingScoreString = "Score: " + Score.ToString();
 
             spriteBatch.DrawString(interfaceFont, drawingScoreString, new Vector2(1920 - interfaceFont.MeasureString(drawingScoreString).X - 10, 10), Color.Lime);
-
-            var rnd = new Random();
-
-            for(int i=0; i<1080; i++)
-            {
-                int ns = rnd.Next(0, 100);
-
-                if(ns<2)
-                {
-                    spriteBatch.Draw(noisePixel, new Rectangle(0, i, 1920, 1), Color.Black);
-                }
-            }
         }
 
         public MapObject AddObject(MapObject mapObject)
