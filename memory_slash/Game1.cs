@@ -24,8 +24,13 @@ namespace memory_slash
                                                         "Those annoying chasers...", 
                                                         "I promise I'll update this until tomorrow", 
                                                         "I've spent almost 20 hours testing...", 
-                                                        "Horrible bullets...", "I CAN SEE SUN"};
-        private int timeSinceLastDeath = 0;
+                                                        "Horrible bullets...", "I CAN SEE SUN",
+                                                        "The centre is the most dangerous place",
+                                                        "Search for score orbs closer to the centre",
+                                                        "SPACE", "THE END"};
+
+        private int timeSinceLastDeath = 0, timeKeyIsPressed = 0, maxScore = 0;
+        private bool previousSpaceState = false;
 
         public Game1()
         {
@@ -47,14 +52,22 @@ namespace memory_slash
 
             this.Window.IsBorderless = false;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
-            this.Window.Title = "Space!";
+            this.Window.Title = "SPACE";
         }
 
         protected override void Initialize()
         {
+            if (File.Exists("score_info"))
+            {
+                using (StreamReader sr = new StreamReader("score_info"))
+                {
+                    maxScore = Int32.Parse(sr.ReadLine());
+                }
+            }
+            
             // TODO: Add your initialization logic here
             mainWorld = new GameWorld(Content);
 
@@ -75,36 +88,49 @@ namespace memory_slash
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
             // TODO: Add your update logic here
             mainWorld.Update(Content);
 
             var rnd = new Random();
 
+            var ks = Keyboard.GetState();
+
             if (!mainWorld.referenceToHero.Alive)
             {
+                maxScore = Math.Max(maxScore, mainWorld.Score);
+
                 if (currentPhrase == "")
                 {
+                    File.WriteAllText("score_info", maxScore.ToString());
+
                     int i = rnd.Next(0, phrases.Count);
 
                     currentPhrase = phrases[i];
                 }
 
-                var ks = Keyboard.GetState();
-
                 timeSinceLastDeath++;
 
-                if(ks.IsKeyDown(Keys.Space)&&timeSinceLastDeath>=30)
+                if (!ks.IsKeyDown(Keys.Space) && previousSpaceState && timeSinceLastDeath >= 30)
                 {
                     mainWorld = new GameWorld(Content);
-
+                    
                     timeSinceLastDeath = 0;
                     
                     currentPhrase = "";
                 }
+                else if(ks.IsKeyDown(Keys.Space))
+                {
+                    timeKeyIsPressed++;
+
+                    if(timeKeyIsPressed>=75)
+                    {
+                        Exit();
+                    }
+                }
             }
+
+            previousSpaceState = ks.IsKeyDown(Keys.Space);
 
             base.Update(gameTime);
         }
@@ -128,7 +154,13 @@ namespace memory_slash
 
                 _spriteBatch.DrawString(MediumMetal, "Press SPACE to restart... And to do everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 350), Color.Lime);
 
-                _spriteBatch.DrawString(SmallMetal, "Collect those blue ring\n And avoid everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 450), Color.Lime);
+                _spriteBatch.DrawString(SmallMetal, "Hold SPACE for more than second...\n To exit(", new Vector2(1100 + SmallMetal.MeasureString("Hold SPACE for more than second...\n To exit(").X / 2, 450), Color.Lime);
+
+                _spriteBatch.DrawString(SmallMetal, "Collect those blue rings\n And avoid everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 450), Color.Lime);
+
+                _spriteBatch.DrawString(MediumMetal, "Score: "+mainWorld.Score.ToString(), new Vector2(960 - MediumMetal.MeasureString("Score: " + mainWorld.Score.ToString()).X / 2, 500), Color.Lime);
+
+                _spriteBatch.DrawString(MediumMetal, "High score: " + maxScore.ToString(), new Vector2(960 - MediumMetal.MeasureString("High score: " + maxScore.ToString()).X / 2, 570), Color.Lime);
             }
 
             for (int i = 0; i < 1080; i++)

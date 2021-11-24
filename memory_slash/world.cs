@@ -92,7 +92,7 @@ namespace memory_slash
 
                 if (rnd.Next(0, 1000) <= (int)(10 / Math.Max(1, Score)))
                 {
-                    int rad = rnd.Next(55, 1650);
+                    int rad = rnd.Next(120, 1650);
 
                     double j = rnd.NextDouble() * Math.PI * 2;
 
