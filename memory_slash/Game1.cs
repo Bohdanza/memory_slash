@@ -52,8 +52,10 @@ namespace memory_slash
 
             this.Window.IsBorderless = false;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
+
+            IsMouseVisible = false;
 
             this.Window.Title = "SPACE";
         }
@@ -123,7 +125,7 @@ namespace memory_slash
                 {
                     timeKeyIsPressed++;
 
-                    if(timeKeyIsPressed>=75)
+                    if(timeKeyIsPressed>=120)
                     {
                         Exit();
                     }

@@ -245,3 +245,9 @@
 /processorParam:TextureFormat=Color
 /build:noise_pixel.png
 
+#begin score_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:score_sound.wav
+

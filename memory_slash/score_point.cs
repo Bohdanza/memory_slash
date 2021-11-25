@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework.Audio;
 
 namespace memory_slash
 {
@@ -18,6 +20,7 @@ namespace memory_slash
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
         public float RotationSpeed { get; protected set; }
         private int timeSinceParticleSummon = 0;
+        private SoundEffect pickUpSound;
 
         public ScoreParticle(ContentManager contentManager, double x, double y, double speed, float rotationSpeed, int type, double radius, int mass)
         {
@@ -33,16 +36,25 @@ namespace memory_slash
             RotationSpeed = rotationSpeed;
             Speed = speed;
 
+            pickUpSound = contentManager.Load<SoundEffect>("score_sound");
+
             updateTexture(contentManager, true);
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
-            if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X + gameWorld.referenceToHero.Radius, gameWorld.referenceToHero.Y + gameWorld.referenceToHero.Radius) <= Radius + gameWorld.referenceToHero.Radius)
+            if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= 50)
             {
-                gameWorld.Score++;
+                base.Move((float)Math.Atan2(gameWorld.referenceToHero.Y - Y, gameWorld.referenceToHero.X - X), 3.1d);
 
-                base.Kill();
+                if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= Radius + gameWorld.referenceToHero.Radius)
+                {
+                    pickUpSound.CreateInstance().Play();
+
+                    gameWorld.Score++;
+
+                    base.Kill();
+                }
             }
             
             base.Update(contentManager, gameWorld);

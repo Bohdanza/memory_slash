@@ -175,7 +175,7 @@ namespace memory_slash
 
         protected void PlaceSystem(ContentManager contentManager, int x, int y, int planetsCount)
         {
-            AddObject(new Asteroid(contentManager, x, y, 0, 0f, 2, 124, 500));
+            AddObject(new Asteroid(contentManager, x, y, 0, 0f, 2, 124, 2000));
 
             Random rnd = new Random();
 
@@ -197,17 +197,17 @@ namespace memory_slash
                 if(size==4)
                 {
                     radius = 48;
-                    mass = 150;
+                    mass = 600;
                 }
                 else if (size == 5)
                 {
                     radius = 32;
-                    mass = 80;
+                    mass = 400;
                 }
                 else if (size == 6)
                 {
                     radius = 16;
-                    mass = 35;
+                    mass = 200;
                 }
 
                 AddObject(new Asteroid(contentManager, x, y - currentRadius, speed, (float)rotationSpeed, size, radius, mass));

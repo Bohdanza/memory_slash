@@ -49,7 +49,7 @@ namespace memory_slash
             double qr = 2 * Math.PI / RotationSpeed;
 
             if (timeSinceParticleSummon >= 1 && (Type == 4 || Type == 5 || Type == 6))
-            {
+            { 
                 timeSinceParticleSummon = 0;
 
                 MapObject part = new Particle(contentManager, X, Y, (int)qr, 0);
@@ -57,7 +57,7 @@ namespace memory_slash
                 gameWorld.AddObject(part);
             }
 
-            if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X + gameWorld.referenceToHero.Radius, gameWorld.referenceToHero.Y + gameWorld.referenceToHero.Radius) <= Radius + gameWorld.referenceToHero.Radius)
+            if (GameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= Radius + gameWorld.referenceToHero.Radius)
             {
                 gameWorld.referenceToHero.Kill();
             }
