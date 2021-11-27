@@ -25,8 +25,8 @@ namespace memory_slash
                                                         "I promise I'll update this until tomorrow", 
                                                         "I've spent almost 20 hours testing...", 
                                                         "Horrible bullets...", "I CAN SEE SUN",
-                                                        "The centre is the most dangerous place",
-                                                        "Search for score orbs closer to the centre",
+                                                        "Danger in the centre",
+                                                        "Score orbs closer to the centre",
                                                         "SPACE", "THE END"};
 
         private int timeSinceLastDeath = 0, timeKeyIsPressed = 0, maxScore = 0;
@@ -147,7 +147,7 @@ namespace memory_slash
             _spriteBatch.Begin();
 
             mainWorld.Draw(_spriteBatch);
-
+            
             if(!mainWorld.referenceToHero.Alive)
             {
                 _spriteBatch.Draw(noisePixel, new Rectangle(0, 0, 1920, 1080), new Color(0, 0, 0, 100));
@@ -158,7 +158,7 @@ namespace memory_slash
 
                 _spriteBatch.DrawString(SmallMetal, "Hold SPACE for more than second...\n To exit(", new Vector2(1100 + SmallMetal.MeasureString("Hold SPACE for more than second...\n To exit(").X / 2, 450), Color.Lime);
 
-                _spriteBatch.DrawString(SmallMetal, "Collect those blue rings\n And avoid everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 450), Color.Lime);
+                _spriteBatch.DrawString(SmallMetal, "Collect those red things\n And avoid everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 450), Color.Lime);
 
                 _spriteBatch.DrawString(MediumMetal, "Score: "+mainWorld.Score.ToString(), new Vector2(960 - MediumMetal.MeasureString("Score: " + mainWorld.Score.ToString()).X / 2, 500), Color.Lime);
 

@@ -60,6 +60,9 @@ namespace memory_slash
             {
                 Random rnd = new Random();
 
+                //Here we summon:
+
+                //simple bullets
                 if (rnd.Next(0, 100) <= Score)
                 {
                     double j = rnd.NextDouble() * Math.PI * 2;
@@ -69,11 +72,27 @@ namespace memory_slash
                     double y = -Math.Cos((float)rot) * 1699;
                     double x = Math.Sin((float)rot) * 1699;
 
-                    var reference = AddObject(new Asteroid(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
+                    var reference = AddObject(new Bullet(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
 
                     ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
                 }
 
+                //comet bullets
+                if (Score >= 3 && rnd.Next(0, 100) <= Score / 3)
+                {
+                    double j = rnd.NextDouble() * Math.PI * 2;
+
+                    double rot = j;
+
+                    double y = -Math.Cos((float)rot) * 1699;
+                    double x = Math.Sin((float)rot) * 1699;
+
+                    var reference = AddObject(new Bullet(contentManager, x, y, 3d + rnd.NextDouble(), (float)(rnd.NextDouble() - 0.5) * 0.00025f, 11, 7, 20));
+
+                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
+
+                //chasers
                 if (Score >= 10 && rnd.Next(0, 100) <= Score / 10)
                 {
                     int rad = rnd.Next(0, 1650);
@@ -175,7 +194,7 @@ namespace memory_slash
 
         protected void PlaceSystem(ContentManager contentManager, int x, int y, int planetsCount)
         {
-            AddObject(new Asteroid(contentManager, x, y, 0, 0f, 2, 124, 2000));
+            AddObject(new Asteroid(contentManager, x, y, 0, 0f, 2, 124, 3000));
 
             Random rnd = new Random();
 
@@ -197,23 +216,25 @@ namespace memory_slash
                 if(size==4)
                 {
                     radius = 48;
-                    mass = 600;
+                    mass = 900;
                 }
                 else if (size == 5)
                 {
                     radius = 32;
-                    mass = 400;
+                    mass = 600;
                 }
                 else if (size == 6)
                 {
                     radius = 16;
-                    mass = 200;
+                    mass = 300;
                 }
 
                 AddObject(new Asteroid(contentManager, x, y - currentRadius, speed, (float)rotationSpeed, size, radius, mass));
 
                 currentRadius += rnd.Next(150, 250);
             }
+
+            AddObject(new Asteroid(contentManager, 0, -2300, 0, 0, 3, -1, -3));
         }
         
         public static double GetDist(double x1, double y1, double x2, double y2)
