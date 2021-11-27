@@ -52,7 +52,7 @@ namespace memory_slash
 
             this.Window.IsBorderless = false;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             IsMouseVisible = false;

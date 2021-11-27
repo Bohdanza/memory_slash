@@ -93,7 +93,7 @@ namespace memory_slash
                 }
 
                 //chasers
-                if (Score >= 10 && rnd.Next(0, 100) <= Score / 10)
+                if (Score >= 6 && rnd.Next(0, 100) <= Score / 6)
                 {
                     int rad = rnd.Next(0, 1650);
 
@@ -104,12 +104,30 @@ namespace memory_slash
                     double y = -Math.Cos((float)rot) * rad;
                     double x = Math.Sin((float)rot) * rad;
 
-                    var reference = AddObject(new Enemy(contentManager, x, y, 9, 2, 8d, 0, 400, 9, 500));
+                    var reference = AddObject(new Enemy(contentManager, x, y, 9, 2, 9d, 0, 400, 0, 500));
 
                     ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
                 }
 
-                if (rnd.Next(0, 1000) <= (int)(10 / Math.Max(1, Score)))
+                //bullet chasers
+                if (Score >= 9 && rnd.Next(0, 100) <= Score / 9)
+                {
+                    int rad = rnd.Next(0, 1650);
+
+                    double j = rnd.NextDouble() * Math.PI * 2;
+
+                    double rot = j;
+
+                    double y = -Math.Cos((float)rot) * rad;
+                    double x = Math.Sin((float)rot) * rad;
+
+                    var reference = AddObject(new Enemy(contentManager, x, y, 12, 2.3, 9d, 2, 500, 150, 500));
+
+                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
+
+                //score
+                if (rnd.Next(0, 10000) <= 25)
                 {
                     int rad = rnd.Next(120, 1650);
 

@@ -20,6 +20,7 @@ namespace memory_slash
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
         public int TimeSinceCreation { get; protected set; }
         public int Lifetime { get; protected set; }
+        private int TimeSinceLastShoot = 0;
 
         public Enemy(ContentManager contentManager, double x, double y, int type, double speed, double radius, int mass, double viewRadius, double attackRadius, int lifetime)
         {
@@ -47,6 +48,9 @@ namespace memory_slash
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
             TimeSinceCreation++;
+            TimeSinceLastShoot++;
+
+            TimeSinceLastShoot %= 100000;
 
             if(TimeSinceCreation>=Lifetime&&Alive)
             {
@@ -68,9 +72,24 @@ namespace memory_slash
 
             if (distToHero <= ViewRadius)
             {
-                if (distToHero <= AttackRadius)
+                if (distToHero <= Radius + gameWorld.referenceToHero.Radius)
                 {
                     gameWorld.referenceToHero.Kill();
+                }
+                else if (distToHero <= AttackRadius)
+                {
+                    Action = "id";
+
+                    Direction = GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
+
+                    if (Type == 12 && TimeSinceLastShoot >= 20)
+                    {
+                        TimeSinceLastShoot = 0;
+
+                        var reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
+
+                        ((Mob)reference).ChangeRotation(this.Direction);
+                    }
                 }
                 else
                 {
