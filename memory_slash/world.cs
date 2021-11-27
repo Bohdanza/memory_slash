@@ -127,7 +127,7 @@ namespace memory_slash
                 }
 
                 //score
-                if (rnd.Next(0, 10000) <= 25)
+                if (rnd.Next(0, 10000) <= 25 + 100 - Score)
                 {
                     int rad = rnd.Next(120, 1650);
 
