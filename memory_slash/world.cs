@@ -19,7 +19,7 @@ namespace memory_slash
         const int blockSize = 2;
         private Texture2D backgroundGrid;
         private SpriteFont interfaceFont;
-        public int Score = 0;
+        public int Score = 7;
 
         public GameWorld(ContentManager contentManager)
         {
@@ -30,8 +30,6 @@ namespace memory_slash
             //PI*2*R == PI*2*speed/rotationSpeed =>
             // =>  R = speed/rotationSpeed
             referenceToHero = AddObject(new Hero(contentManager, 0, -1600));
-
-            AddObject(new Laser(contentManager, -200, -1650, 1, 13));
 
             PlaceDysonSphere(contentManager, 1700, 0.1, 10000, 800, 0.025);
 
@@ -127,7 +125,20 @@ namespace memory_slash
 
                     ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
                 }
-                
+
+                //Lasers
+                if (Score >= 7 && rnd.Next(0, 100) <= Score / 7)
+                {
+                    double j = rnd.NextDouble() * Math.PI * 2;
+
+                    double rot = j;
+
+                    double y = -Math.Cos((float)rot) * 1699;
+                    double x = Math.Sin((float)rot) * 1699;
+
+                    var reference = AddObject(new Laser(contentManager, x, y, (float)(rot + Math.PI * 0.5), 13, 40));
+                }
+
                 //score
                 if (rnd.Next(0, 10000) <= 25 + 100 - Score)
                 {

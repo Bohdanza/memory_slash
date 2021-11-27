@@ -18,8 +18,10 @@ namespace memory_slash
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override float Direction { get => base.Direction; protected set => base.Direction = value; }
+        public int Lifetime { get; protected set; }
+        public int TimeSinceBorn { get; protected set; }
 
-        public Laser(ContentManager contentManager, double x, double y, float Direction, int type)
+        public Laser(ContentManager contentManager, double x, double y, float Direction, int type, int lifetime)
         {
             X = x;
             Y = y;
@@ -30,11 +32,21 @@ namespace memory_slash
 
             base.Action = "id";
 
+            Lifetime = lifetime;
+            TimeSinceBorn = 0;
+
             base.updateTexture(contentManager, true);
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
+            TimeSinceBorn++;
+
+            if(TimeSinceBorn>=Lifetime)
+            {
+                base.Kill();
+            }
+
             float herodir = GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
 
             if (Math.Abs(Direction - herodir) <= 0.015)
@@ -52,7 +64,7 @@ namespace memory_slash
                 new Rectangle(0, 0, Textures[TexturePhase].Width, Textures[TexturePhase].Height),
                 Color.White,
                 Direction,
-                new Vector2(Textures[TexturePhase].Width / 2, Textures[TexturePhase].Height / 2), new Vector2(10000f, 1f), SpriteEffects.None,
+                new Vector2(Textures[TexturePhase].Width / 2, Textures[TexturePhase].Height / 2), new Vector2(9500f, 1f), SpriteEffects.None,
                 0);
         }
     }
