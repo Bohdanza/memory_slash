@@ -127,7 +127,7 @@ namespace memory_slash
                 }
 
                 //Lasers
-                if (Score >= 7 && rnd.Next(0, 100) <= Score / 7)
+                if (Score >= 5 && rnd.Next(0, 75) <= Score / 5)
                 {
                     double j = rnd.NextDouble() * Math.PI * 2;
 
