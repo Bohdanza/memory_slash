@@ -31,6 +31,8 @@ namespace memory_slash
             // =>  R = speed/rotationSpeed
             referenceToHero = AddObject(new Hero(contentManager, 0, -1600));
 
+            AddObject(new Laser(contentManager, -200, -1650, 1, 13));
+
             PlaceDysonSphere(contentManager, 1700, 0.1, 10000, 800, 0.025);
 
             backgroundGrid = contentManager.Load<Texture2D>("backgroung_grid");
@@ -125,7 +127,7 @@ namespace memory_slash
 
                     ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
                 }
-
+                
                 //score
                 if (rnd.Next(0, 10000) <= 25 + 100 - Score)
                 {
@@ -167,7 +169,7 @@ namespace memory_slash
             {
                 var currentObject = mapObjects[i];
 
-                if (GetDist(referenceToHero.X, referenceToHero.Y, currentObject.X, currentObject.Y) <= 1080 / blockSize)
+                if (GetDist(referenceToHero.X, referenceToHero.Y, currentObject.X, currentObject.Y) <= 1920 / blockSize || mapObjects[i] is Laser)
                 {
                     currentObject.Draw(spriteBatch, (int)(x + currentObject.X * blockSize) + 960, (int)(y + currentObject.Y * blockSize) + 540);
                 }
