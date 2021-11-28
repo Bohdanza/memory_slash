@@ -52,7 +52,7 @@ namespace memory_slash
 
             TimeSinceLastShoot %= 100000;
 
-            if(TimeSinceCreation>=Lifetime&&Alive)
+            if (TimeSinceCreation >= Lifetime && Alive)
             {
                 var rnd = new Random();
 
@@ -89,6 +89,19 @@ namespace memory_slash
                         var reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
 
                         ((Mob)reference).ChangeRotation(this.Direction);
+                    }
+
+                    if (Type == 14 && TimeSinceLastShoot >= 26)
+                    {
+                        TimeSinceLastShoot = 0;
+
+                        var reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.1, 0, 10, 4.5, 1));
+
+                        ((Mob)reference).ChangeRotation(this.Direction);
+
+                        reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.1, 0, 10, 4.5, 1));
+
+                        ((Mob)reference).ChangeRotation((float)(this.Direction + Math.PI));
                     }
                 }
                 else
