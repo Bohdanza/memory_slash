@@ -19,7 +19,7 @@ namespace memory_slash
         const int blockSize = 2;
         private Texture2D backgroundGrid;
         private SpriteFont interfaceFont;
-        public int Score = 11;
+        public int Score = 0;
 
         public GameWorld(ContentManager contentManager)
         {
@@ -110,7 +110,7 @@ namespace memory_slash
                 }
 
                 //bullet chasers
-                if (Score >= 9 && rnd.Next(0, 100) <= Score / 9)
+                if (Score >= 7 && rnd.Next(0, 100) <= Score / 7)
                 {
                     int rad = rnd.Next(0, 1650);
 
@@ -127,7 +127,7 @@ namespace memory_slash
                 }
 
                 //double bullet chasers
-                if (Score >= 11 && rnd.Next(0, 100) <= Score / 11)
+                if (Score >= 9 && rnd.Next(0, 100) <= Score / 9)
                 {
                     int rad = rnd.Next(0, 1650);
 
@@ -139,6 +139,23 @@ namespace memory_slash
                     double x = Math.Sin((float)rot) * rad;
 
                     var reference = AddObject(new Enemy(contentManager, x, y, 14, 2.6, 9d, 4, 500, 200, 550));
+
+                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
+
+                //rotating chasers
+                if (Score >= 10 && rnd.Next(0, 100) <= Score / 10)
+                {
+                    int rad = rnd.Next(0, 1650);
+
+                    double j = rnd.NextDouble() * Math.PI * 2;
+
+                    double rot = j;
+
+                    double y = -Math.Cos((float)rot) * rad;
+                    double x = Math.Sin((float)rot) * rad;
+
+                    var reference = AddObject(new Enemy(contentManager, x, y, 15, 2.1, 9d, 0, 400, 0, 450));
 
                     ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
                 }

@@ -108,9 +108,39 @@ namespace memory_slash
                 {
                     Action = "fly";
 
-                    Direction = GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
+                    if (Type != 15)
+                    {
+                        Direction = GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y);
 
-                    base.Move(Direction, Speed);
+                        base.Move(Direction, Speed);
+                    }
+                    else
+                    {
+                        base.Move(GameWorld.GetDirection(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y), Speed);
+
+                        Direction += 0.02f;
+
+                        if (TimeSinceLastShoot >= 15)
+                        {
+                            TimeSinceLastShoot = 0;
+
+                            var reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
+
+                            ((Mob)reference).ChangeRotation(this.Direction);
+
+                            reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
+
+                            ((Mob)reference).ChangeRotation((float)(this.Direction + Math.PI * 0.5));
+
+                            reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
+
+                            ((Mob)reference).ChangeRotation((float)(this.Direction + Math.PI));
+
+                            reference = gameWorld.AddObject(new Bullet(contentManager, X, Y, 3.5, 0, 10, 4.5, 1));
+
+                            ((Mob)reference).ChangeRotation((float)(this.Direction + Math.PI * 1.5));
+                        }
+                    }
                 }
             }
 
