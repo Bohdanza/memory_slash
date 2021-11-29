@@ -19,10 +19,13 @@ namespace memory_slash
         const int blockSize = 2;
         private Texture2D backgroundGrid;
         private SpriteFont interfaceFont;
-        public int Score = 0;
+        public int Score = 0, PlayMode=0;
+        public int Time { get; private set; } = 1;
 
-        public GameWorld(ContentManager contentManager)
+        public GameWorld(ContentManager contentManager, int playMode)
         {
+            PlayMode = playMode;
+
             var rnd = new Random();
 
             PlaceSystem(contentManager, 0, 0, rnd.Next(3, 7));
@@ -40,6 +43,10 @@ namespace memory_slash
 
         public void Update(ContentManager contentManager)
         {
+            Time++;
+
+            Time %= Int32.MaxValue;
+
             int l = 1;
 
             for (int i = 0; i < mapObjects.Count; i += l)
@@ -174,20 +181,30 @@ namespace memory_slash
                 }
 
                 //score
-                if (rnd.Next(0, 10000) <= 25 + 100 - Score)
+                if (PlayMode == 0)
                 {
-                    int rad = rnd.Next(120, 1650);
+                    if (rnd.Next(0, 10000) <= 25 + 100 - Score)
+                    {
+                        int rad = rnd.Next(120, 1650);
 
-                    double j = rnd.NextDouble() * Math.PI * 2;
+                        double j = rnd.NextDouble() * Math.PI * 2;
 
-                    double rot = j;
+                        double rot = j;
 
-                    double y = -Math.Cos((float)rot) * rad;
-                    double x = Math.Sin((float)rot) * rad;
+                        double y = -Math.Cos((float)rot) * rad;
+                        double x = Math.Sin((float)rot) * rad;
 
-                    var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 1, 4.5, 2));
+                        var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 1, 4.5, 2));
 
-                    //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                        //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                    }
+                }
+                else if (PlayMode == 1)
+                {
+                    if (Time % 500 == 0)
+                    {
+                        Score++;
+                    }
                 }
             }
         }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace memory_slash
 {
@@ -29,8 +30,11 @@ namespace memory_slash
                                                         "Score orbs closer to the centre",
                                                         "SPACE", "THE END"};
 
-        private int timeSinceLastDeath = 0, timeKeyIsPressed = 0, maxScore = 0;
+        private int timeSinceLastDeath = 0, timeKeyIsPressed = 0, maxScore = 0, currentMode = 0;
         private bool previousSpaceState = false;
+        private List<int> HighScores = new List<int>();
+        public const int ModesCount = 2;
+        private List<string> ModeNames = new List<string> {"Classic mode", "Time mode"};
 
         public Game1()
         {
@@ -60,6 +64,11 @@ namespace memory_slash
             this.Window.Title = "SPACE";
         }
 
+        protected void DrawWorld()
+        {
+            mainWorld.Draw(_spriteBatch);
+        }
+
         protected override void Initialize()
         {
             if (File.Exists("score_info"))
@@ -71,7 +80,7 @@ namespace memory_slash
             }
             
             // TODO: Add your initialization logic here
-            mainWorld = new GameWorld(Content);
+            mainWorld = new GameWorld(Content, 1);
 
             base.Initialize();
         }
@@ -115,7 +124,7 @@ namespace memory_slash
 
                 if (!ks.IsKeyDown(Keys.Space) && previousSpaceState && timeSinceLastDeath >= 30)
                 {
-                    mainWorld = new GameWorld(Content);
+                    mainWorld = new GameWorld(Content, 1);
                     
                     timeSinceLastDeath = 0;
                     

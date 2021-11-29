@@ -84,7 +84,7 @@ namespace memory_slash
             {
                 base.Kill();
 
-                var rnd = new Random();
+               /* var rnd = new Random();
 
                 int count = rnd.Next(30, 60);
 
@@ -93,7 +93,7 @@ namespace memory_slash
                     var refer = gameWorld.AddObject(new Particle(contentManager, X, Y, rnd.Next(50, 120), 0));
 
                     ((Particle)refer).DrawMovement = new Vector2((float)(rnd.NextDouble() - 0.5) * 3, (float)(rnd.NextDouble() - 0.5) * 3);
-                }
+                }*/
             }
 
             if(Type==11)
