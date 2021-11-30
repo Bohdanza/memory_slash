@@ -35,6 +35,7 @@ namespace memory_slash
         private List<int> HighScores = new List<int>();
         public const int ModesCount = 2;
         private List<string> ModeNames = new List<string> {"Classic mode", "Time mode"};
+        private List<string> ModeDescriptions = new List<string> { "Collect as many red orbs as you can\nThe more you have the higher is difficulty", "Survive as long as you can\nScore would increase automatically" };
 
         public Game1()
         {
@@ -75,13 +76,25 @@ namespace memory_slash
             {
                 using (StreamReader sr = new StreamReader("score_info"))
                 {
-                    maxScore = Int32.Parse(sr.ReadLine());
+                    List<string> tmplist = sr.ReadToEnd().Split('\n').ToList();
+
+                    for (int i = 0; i < ModesCount; i++)
+                    {
+                        if (i < tmplist.Count)
+                        {
+                            HighScores.Add(Int32.Parse(tmplist[i]));
+                        }
+
+                        HighScores.Add(0);
+                    }
                 }
             }
 
             // TODO: Add your initialization logic here
             mainWorld = new GameWorld(Content, 0);
             mainWorld.KillHero();
+
+            mainWorld.Score = 0;
 
             base.Initialize();
         }
@@ -106,6 +119,11 @@ namespace memory_slash
             var rnd = new Random();
 
             var ks = Keyboard.GetState();
+
+            if(ks.IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
 
             if (!mainWorld.referenceToHero.Alive)
             {
@@ -166,7 +184,15 @@ namespace memory_slash
             {
                 _spriteBatch.Draw(noisePixel, new Rectangle(0, 0, 1920, 1080), new Color(0, 0, 0, 100));
 
-                _spriteBatch.DrawString(MediumMetal, ModeNames[currentMode], new Vector2(960 - MediumMetal.MeasureString(ModeNames[currentMode]).X / 2, 200), Color.Lime);
+                _spriteBatch.DrawString(LargeMetal, ModeNames[currentMode], new Vector2(960 - LargeMetal.MeasureString(ModeNames[currentMode]).X / 2, 200), Color.Lime);
+
+                _spriteBatch.DrawString(SmallMetal, "Press space to select mode\nHold space to play\n\nPress esc to exit\n", new Vector2(1900 - SmallMetal.MeasureString("Press space to select mode").X, 450), Color.Lime);
+
+                _spriteBatch.DrawString(SmallMetal, ModeDescriptions[currentMode], new Vector2(100, 450), Color.Lime);
+
+                string highScoreString = "Score: " + HighScores[currentMode].ToString();
+
+                _spriteBatch.DrawString(MediumMetal, highScoreString, new Vector2(960 - MediumMetal.MeasureString(highScoreString).X / 2, 450), Color.Lime);
             }
 
             for (int i = 0; i < 1080; i++)
