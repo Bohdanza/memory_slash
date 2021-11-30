@@ -331,5 +331,10 @@ namespace memory_slash
         {
             return (float)Math.Atan2(y1 - y2, x1 - x2);
         }
+
+        public void KillHero()
+        {
+            this.referenceToHero.Kill();
+        }
     }
 }

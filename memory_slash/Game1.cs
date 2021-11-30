@@ -68,7 +68,7 @@ namespace memory_slash
         {
             mainWorld.Draw(_spriteBatch);
         }
-
+        
         protected override void Initialize()
         {
             if (File.Exists("score_info"))
@@ -78,9 +78,10 @@ namespace memory_slash
                     maxScore = Int32.Parse(sr.ReadLine());
                 }
             }
-            
+
             // TODO: Add your initialization logic here
-            mainWorld = new GameWorld(Content, 1);
+            mainWorld = new GameWorld(Content, 0);
+            mainWorld.KillHero();
 
             base.Initialize();
         }
@@ -99,7 +100,6 @@ namespace memory_slash
 
         protected override void Update(GameTime gameTime)
         {
-
             // TODO: Add your update logic here
             mainWorld.Update(Content);
 
@@ -122,22 +122,27 @@ namespace memory_slash
 
                 timeSinceLastDeath++;
 
-                if (!ks.IsKeyDown(Keys.Space) && previousSpaceState && timeSinceLastDeath >= 30)
+                if (!ks.IsKeyDown(Keys.Space) && previousSpaceState)
                 {
-                    mainWorld = new GameWorld(Content, 1);
+                    if (timeKeyIsPressed <= 40)
+                    {
+                        currentMode++;
+
+                        if (currentMode >= ModesCount)
+                        {
+                            currentMode = 0;
+                        }
+                    }
+                    else if (timeKeyIsPressed > 40)
+                    {
+                        mainWorld = new GameWorld(Content, currentMode);
+                    }
                     
-                    timeSinceLastDeath = 0;
-                    
-                    currentPhrase = "";
+                    timeKeyIsPressed = 0;
                 }
                 else if(ks.IsKeyDown(Keys.Space))
                 {
                     timeKeyIsPressed++;
-
-                    if(timeKeyIsPressed>=120)
-                    {
-                        Exit();
-                    }
                 }
             }
 
@@ -161,23 +166,13 @@ namespace memory_slash
             {
                 _spriteBatch.Draw(noisePixel, new Rectangle(0, 0, 1920, 1080), new Color(0, 0, 0, 100));
 
-                _spriteBatch.DrawString(LargeMetal, currentPhrase, new Vector2(960 - LargeMetal.MeasureString(currentPhrase).X / 2, 230), Color.Lime);
-
-                _spriteBatch.DrawString(MediumMetal, "Press SPACE to restart... And to do everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 350), Color.Lime);
-
-                _spriteBatch.DrawString(SmallMetal, "Hold SPACE for more than second...\n To exit(", new Vector2(1100 + SmallMetal.MeasureString("Hold SPACE for more than second...\n To exit(").X / 2, 450), Color.Lime);
-
-                _spriteBatch.DrawString(SmallMetal, "Collect those red things\n And avoid everything else!", new Vector2(960 - MediumMetal.MeasureString("Press SPACE to restart... And to do everything else!").X / 2, 450), Color.Lime);
-
-                _spriteBatch.DrawString(MediumMetal, "Score: "+mainWorld.Score.ToString(), new Vector2(960 - MediumMetal.MeasureString("Score: " + mainWorld.Score.ToString()).X / 2, 500), Color.Lime);
-
-                _spriteBatch.DrawString(MediumMetal, "High score: " + maxScore.ToString(), new Vector2(960 - MediumMetal.MeasureString("High score: " + maxScore.ToString()).X / 2, 570), Color.Lime);
+                _spriteBatch.DrawString(MediumMetal, ModeNames[currentMode], new Vector2(960 - MediumMetal.MeasureString(ModeNames[currentMode]).X / 2, 200), Color.Lime);
             }
 
             for (int i = 0; i < 1080; i++)
             {
                 int ns = rnd.Next(0, 100);
-
+                
                 if (ns < 2)
                 {
                     _spriteBatch.Draw(noisePixel, new Rectangle(0, i, 1920, 1), Color.Black);
