@@ -33,9 +33,9 @@ namespace memory_slash
         private int timeSinceLastDeath = 0, timeKeyIsPressed = 0, maxScore = 0, currentMode = 0;
         private bool previousSpaceState = false;
         private List<int> HighScores = new List<int>();
-        public const int ModesCount = 2;
-        private List<string> ModeNames = new List<string> {"Classic mode", "Time mode"};
-        private List<string> ModeDescriptions = new List<string> { "Collect as many red orbs as you can\nThe more you have the higher is difficulty", "Survive as long as you can\nScore would increase automatically" };
+        public const int ModesCount = 3;
+        private List<string> ModeNames = new List<string> {"Classic mode", "Time mode", "Laser Hell"};
+        private List<string> ModeDescriptions = new List<string> { "Collect as many red orbs as you can\nThe more you have the higher is difficulty", "Survive as long as you can\nScore would increase automatically", "Everything is as usuall,\n but bullets replaced with lasers" };
 
         public Game1()
         {

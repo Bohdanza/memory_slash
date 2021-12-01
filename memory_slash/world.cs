@@ -70,18 +70,35 @@ namespace memory_slash
                 //Here we summon:
 
                 //simple bullets
-                if (rnd.Next(0, 100) <= Score)
+                if (PlayMode != 2)
                 {
-                    double j = rnd.NextDouble() * Math.PI * 2;
+                    if (rnd.Next(0, 100) <= Score)
+                    {
+                        double j = rnd.NextDouble() * Math.PI * 2;
 
-                    double rot = j;
+                        double rot = j;
 
-                    double y = -Math.Cos((float)rot) * 1699;
-                    double x = Math.Sin((float)rot) * 1699;
+                        double y = -Math.Cos((float)rot) * 1699;
+                        double x = Math.Sin((float)rot) * 1699;
 
-                    var reference = AddObject(new Bullet(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
+                        var reference = AddObject(new Bullet(contentManager, x, y, 3.5, 0, 10, 4.5, 1));
 
-                    ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                        ((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                    }
+                }
+                else
+                {
+                    if (rnd.Next(0, 100) <= Score)
+                    {
+                        double j = rnd.NextDouble() * Math.PI * 2;
+
+                        double rot = j;
+
+                        double y = -Math.Cos((float)rot) * 1699;
+                        double x = Math.Sin((float)rot) * 1699;
+
+                        var reference = AddObject(new Laser(contentManager, x, y, (float)(rot + Math.PI * 0.5), 13, 40));
+                    }
                 }
 
                 //comet bullets
@@ -181,7 +198,7 @@ namespace memory_slash
                 }
 
                 //score
-                if (PlayMode == 0)
+                if (PlayMode != 1)
                 {
                     if (rnd.Next(0, 10000) <= 25 + 100 - Score)
                     {
