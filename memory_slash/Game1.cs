@@ -122,12 +122,20 @@ namespace memory_slash
 
             if(ks.IsKeyDown(Keys.Escape))
             {
+                using (StreamWriter sr = new StreamWriter("score_info"))
+                {
+                    foreach (var currentScore in HighScores)
+                    {
+                        sr.WriteLine(currentScore);
+                    }
+                }
+
                 Exit();
             }
 
             if (!mainWorld.referenceToHero.Alive)
             {
-                maxScore = Math.Max(maxScore, mainWorld.Score);
+                HighScores[mainWorld.PlayMode] = Math.Max(HighScores[mainWorld.PlayMode], mainWorld.Score);
 
                 if (currentPhrase == "")
                 {
