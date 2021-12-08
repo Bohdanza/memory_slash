@@ -51,7 +51,14 @@ namespace memory_slash
                 {
                     pickUpSound.CreateInstance().Play();
 
-                    gameWorld.Score++;
+                    if (Type == 1)
+                    {
+                        gameWorld.Score++;
+                    }
+                    else if(Type == 16)
+                    {
+                        ((Hero)gameWorld.referenceToHero).ShieldPower+=20;
+                    }
 
                     base.Kill();
                 }

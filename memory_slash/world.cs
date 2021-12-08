@@ -223,6 +223,23 @@ namespace memory_slash
                         Score++;
                     }
                 }
+
+                //shields
+                if (rnd.Next(0, 10000) <= 10)
+                { 
+                    int rad = rnd.Next(120, 1650);
+
+                    double j = rnd.NextDouble() * Math.PI * 2;
+
+                    double rot = j;
+
+                    double y = -Math.Cos((float)rot) * rad;
+                    double x = Math.Sin((float)rot) * rad;
+
+                    var reference = AddObject(new ScoreParticle(contentManager, x, y, 0, 0, 16, 4.5, 2));
+
+                    //((Mob)reference).ChangeRotation((float)(rot + Math.PI * 0.5));
+                }
             }
         }
 

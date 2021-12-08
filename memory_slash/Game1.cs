@@ -57,7 +57,7 @@ namespace memory_slash
 
             this.Window.IsBorderless = false;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             IsMouseVisible = false;
@@ -84,9 +84,16 @@ namespace memory_slash
                         {
                             HighScores.Add(Int32.Parse(tmplist[i]));
                         }
-
+                        
                         HighScores.Add(0);
                     }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < ModesCount; i++)
+                {
+                    HighScores.Add(0);
                 }
             }
 
@@ -198,9 +205,20 @@ namespace memory_slash
 
                 _spriteBatch.DrawString(SmallMetal, ModeDescriptions[currentMode], new Vector2(100, 450), Color.Lime);
 
-                string highScoreString = "Score: " + HighScores[currentMode].ToString();
+                int tmpscore = mainWorld.Score;
+
+                if (mainWorld.PlayMode != currentMode)
+                {
+                    tmpscore = 0;
+                }
+
+                string highScoreString = "High score: " + tmpscore;
 
                 _spriteBatch.DrawString(MediumMetal, highScoreString, new Vector2(960 - MediumMetal.MeasureString(highScoreString).X / 2, 450), Color.Lime);
+                
+                highScoreString = "Score: " + HighScores[currentMode].ToString();
+
+                _spriteBatch.DrawString(MediumMetal, highScoreString, new Vector2(960 - MediumMetal.MeasureString(highScoreString).X / 2, 550), Color.Lime);
             }
 
             for (int i = 0; i < 1080; i++)

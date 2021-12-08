@@ -20,6 +20,8 @@ namespace memory_slash
         private int timeSinceLastMovement = 1000, movementDuration = 20;
         private double px;
         private double py;
+        public int ShieldPower = 0;
+        private Texture2D shieldTexture;
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -35,6 +37,8 @@ namespace memory_slash
 
             px = X;
             py = Y;
+
+            shieldTexture = contentManager.Load<Texture2D>("shield");
 
             base.updateTexture(contentManager, true);
         }
@@ -100,6 +104,16 @@ namespace memory_slash
             base.Update(contentManager, gameWorld);
         }
 
+        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        {
+            base.Draw(spriteBatch, x, y);
+
+            if(ShieldPower>0)
+            {
+                spriteBatch.Draw(shieldTexture, new Vector2(x-shieldTexture.Width/2, y-shieldTexture.Height/2), new Color(255,255,255,ShieldPower*2));
+            }
+        }
+
         public void DrawInterface(SpriteBatch spriteBatch, SpriteFont font, Color color)
         {
             double tmpx = Math.Truncate(X * 10000) / 10000;
@@ -114,7 +128,14 @@ namespace memory_slash
 
         public override void Kill()
         {
-            base.Kill();
+            if (ShieldPower>0)
+            {
+                ShieldPower--;
+            }
+            else
+            {
+                base.Kill();
+            }
         }
     }
 }
