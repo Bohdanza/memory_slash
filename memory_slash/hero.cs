@@ -45,6 +45,11 @@ namespace memory_slash
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld)
         {
+            if(ShieldPower>0)
+            {
+                ShieldPower--;
+            }
+
             px = X;
             py = Y;
 

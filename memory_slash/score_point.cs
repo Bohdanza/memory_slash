@@ -57,7 +57,7 @@ namespace memory_slash
                     }
                     else if(Type == 16)
                     {
-                        ((Hero)gameWorld.referenceToHero).ShieldPower+=20;
+                        ((Hero)gameWorld.referenceToHero).ShieldPower+=600;
                     }
 
                     base.Kill();

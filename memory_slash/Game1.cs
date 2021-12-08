@@ -212,11 +212,11 @@ namespace memory_slash
                     tmpscore = 0;
                 }
 
-                string highScoreString = "High score: " + tmpscore;
+                string highScoreString = "Score: " + tmpscore;
 
                 _spriteBatch.DrawString(MediumMetal, highScoreString, new Vector2(960 - MediumMetal.MeasureString(highScoreString).X / 2, 450), Color.Lime);
                 
-                highScoreString = "Score: " + HighScores[currentMode].ToString();
+                highScoreString = "High score: " + HighScores[currentMode].ToString();
 
                 _spriteBatch.DrawString(MediumMetal, highScoreString, new Vector2(960 - MediumMetal.MeasureString(highScoreString).X / 2, 550), Color.Lime);
             }
